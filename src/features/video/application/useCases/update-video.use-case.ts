@@ -16,7 +16,7 @@ export class UpdateVideoCommand {
     updateVideoDto: UpdateVideoType,
   ) {
     this.title = updateVideoDto.title;
-    this.author = updateVideoDto.title;
+    this.author = updateVideoDto.author;
     this.availableResolutions = updateVideoDto.availableResolutions;
     this.canBeDownloaded = updateVideoDto.canBeDownloaded;
     this.minAgeRestriction = updateVideoDto.minAgeRestriction;
