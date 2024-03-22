@@ -24,7 +24,6 @@ config({
   path: `.${process.env.NODE_ENV}.env`,
 });
 const configService = new ConfigService();
-console.log(configService.get('DB_ADAPTER'));
 
 const useCases = [
   VideoService,
