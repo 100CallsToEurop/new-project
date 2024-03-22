@@ -60,7 +60,7 @@ export class VideoAggregate extends VideoService implements IVideo {
     _video.id = +new Date();
     _video.title = video.title;
     _video.author = video.author;
-    _video.canBeDownloaded = true;
+    _video.canBeDownloaded = false;
     _video.minAgeRestriction = null;
     _video.createdAt = new Date();
     _video.publicationDate = addDays(_video.createdAt, 1);
