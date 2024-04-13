@@ -16,12 +16,12 @@ export class VideoService {
     return await this.videosRepository.save(video);
   }
 
-  async deleteVideo(id: number): Promise<void> {
+  async deleteVideo(id: string): Promise<void> {
     this.logger.log(`Удаление видео id: ${id} из БД`);
-    return await this.videosRepository.deleteById(id);
+    await this.videosRepository.delete(id);
   }
 
-  async getVideoById(id: number): Promise<VideoAggregate> {
+  async getVideoById(id: string): Promise<VideoAggregate> {
     this.logger.log(`Поиск видео по id: ${id}`);
     const video = await this.videosRepository.getById(id);
     if (!video) {

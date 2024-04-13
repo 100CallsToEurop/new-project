@@ -1,7 +1,7 @@
 import { AVAILABLE_RESOLUTIONS } from '../../../domain';
 
 export class VideoViewModel {
-  id: number;
+  id: string;
   title: string;
   author: string;
   canBeDownloaded: boolean;

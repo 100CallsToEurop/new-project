@@ -12,7 +12,7 @@ export class UpdateVideoCommand {
   minAgeRestriction: number;
   publicationDate: Date;
   constructor(
-    public id: number,
+    public id: string,
     updateVideoDto: UpdateVideoType,
   ) {
     this.title = updateVideoDto.title;

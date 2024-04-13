@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 import { VideoService } from '../service';
 
 export class DeleteVideoCommand {
-  constructor(public id: number) {}
+  constructor(public id: string) {}
 }
 
 @CommandHandler(DeleteVideoCommand)

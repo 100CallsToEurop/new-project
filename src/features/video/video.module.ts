@@ -8,6 +8,7 @@ import { VideoEntity } from '../../db/typeorm/entity';
 import { VideosRepository } from './infrastructure/repository';
 import {
   VideoMongodbAdapter,
+  //VideoMongodbAdapter,
   VideoPostgresAdapter,
 } from './infrastructure/adapter';
 import { VideoService } from './application/service';

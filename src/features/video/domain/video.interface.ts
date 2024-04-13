@@ -1,5 +1,5 @@
 export interface IVideoResponse {
-  id: number;
+  id: string;
   title: string;
   author: string;
   canBeDownloaded: boolean;
@@ -21,7 +21,7 @@ export enum AVAILABLE_RESOLUTIONS {
 }
 
 export interface IVideo {
-  id: number;
+  id: string;
   title: string;
   author: string;
   canBeDownloaded: boolean;

@@ -20,12 +20,12 @@ import {
   IVideoResponse,
 } from './video.interface';
 import { addDays } from 'date-fns';
+import { randomUUID } from 'crypto';
 
 export class VideoAggregate extends VideoService implements IVideo {
   private readonly logger = new Logger(VideoAggregate.name);
-  @IsNumber()
   @IsOptional()
-  id: number;
+  id: string;
   @IsString()
   @IsNotEmpty()
   @MaxLength(40)
@@ -57,19 +57,19 @@ export class VideoAggregate extends VideoService implements IVideo {
   }
   static create(video: Partial<IVideo>): VideoAggregate {
     const _video = new VideoAggregate();
-    _video.id = +new Date();
+    _video.id = randomUUID();
     _video.title = video.title;
     _video.author = video.author;
     _video.canBeDownloaded = false;
     _video.minAgeRestriction = null;
     _video.createdAt = new Date();
     _video.publicationDate = addDays(_video.createdAt, 1);
-    _video.availableResolutions = video.availableResolutions;
+    _video.availableResolutions = video.availableResolutions!;
 
     const error = validateSync(_video);
     if (!!error.length) {
       error.forEach((e) => _video.logger.error(e.constraints));
-      throw new Error('Testing not valid');
+      throw new Error('Video not valid');
     }
     return _video;
   }

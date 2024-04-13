@@ -4,6 +4,8 @@ import { ENTITIES } from '../entity';
 import { DataSource } from 'typeorm';
 
 export const TypeOrmConfigService = (): TypeOrmModuleAsyncOptions => ({
+  inject: [ConfigService],
+  imports: [ConfigModule],
   useFactory: (configService: ConfigService) => ({
     type: 'postgres',
     host: configService.get('PG_HOST'),
@@ -17,6 +19,4 @@ export const TypeOrmConfigService = (): TypeOrmModuleAsyncOptions => ({
   dataSourceFactory: async (options) => {
     return await new DataSource(options).initialize();
   },
-  inject: [ConfigService],
-  imports: [ConfigModule],
 });

@@ -1,11 +1,9 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { AVAILABLE_RESOLUTIONS } from '../../../features/video/domain';
+import { BaseEntity } from '../../../core/orms/typeorm/postgres';
 
 @Entity('videos')
-export class VideoEntity {
-  @PrimaryColumn()
-  id: number;
-
+export class VideoEntity extends BaseEntity {
   @Column()
   title: string;
 

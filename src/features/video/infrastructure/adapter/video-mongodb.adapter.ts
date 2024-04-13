@@ -1,45 +1,29 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Video } from '../../../../db/mongoose/schemas';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { VideosRepository } from '../repository';
 import { VideoAggregate } from '../../domain';
+import { BaseAdapter } from '../../../../core/orms/mongoose/mongodb/base.adapter';
 
 @Injectable()
-export class VideoMongodbAdapter implements VideosRepository {
+export class VideoMongodbAdapter
+  extends BaseAdapter<VideoAggregate, Video>
+  implements VideosRepository
+{
   logger: Logger = new Logger(VideoMongodbAdapter.name);
-  constructor(@InjectModel(Video.name) private videoModel: Model<Video>) {}
-
-  mapping(entity: Video): VideoAggregate {
-    return VideoAggregate.mapping(entity);
+  constructor(@InjectModel(Video.name) private videoModel: Model<Video>) {
+    super(videoModel);
   }
 
-  async save(video: VideoAggregate): Promise<VideoAggregate> {
-    let newVideo;
-    const checkVideo = await this.videoModel.findOne({ id: video.id }).exec();
-    if (checkVideo) {
-      newVideo = await this.videoModel.findOneAndUpdate(
-        { id: video.id },
-        video,
-        { new: true },
-      );
-    } else {
-      newVideo = new this.videoModel(video);
-      newVideo._id = new Types.ObjectId();
-      await newVideo.save();
-    }
-    return this.mapping(newVideo);
+  mapping(schema: Video): VideoAggregate {
+    return VideoAggregate.mapping(schema);
   }
-  async getById(id: number): Promise<VideoAggregate> {
-    const video = await this.videoModel.findOne({ id }).exec();
-    return video ? this.mapping(video) : null;
+
+  async getById(id: string): Promise<VideoAggregate | null> {
+    return await this.findByOptions({ _id: id });
   }
   async getAll(): Promise<[VideoAggregate[], number]> {
-    const videoModels = await this.videoModel.find().exec();
-    const videos = videoModels.map((video) => this.mapping(video));
-    return [videos, videoModels.length];
-  }
-  async deleteById(id: number): Promise<void> {
-    await this.videoModel.findOneAndDelete({ id }).exec();
+    return await this.findAll();
   }
 }

@@ -8,7 +8,7 @@ export class VideosQueryRepository {
   logger = new Logger(VideosQueryRepository.name);
   constructor(private readonly videoService: VideoService) {}
 
-  async getVideoById(id: number): Promise<VideoViewModel> {
+  async getVideoById(id: string): Promise<VideoViewModel> {
     const video = await this.videoService.getVideoById(id);
     return VideoAggregate.BuildResponseVideo(video);
   }

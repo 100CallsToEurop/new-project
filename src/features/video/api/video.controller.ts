@@ -6,7 +6,6 @@ import {
   HttpCode,
   Logger,
   Param,
-  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -39,31 +38,29 @@ export class VideoController {
   }
   @HttpCode(204)
   @Delete(':id')
-  async deleteVideo(@Param('id', ParseIntPipe) id: string): Promise<void> {
+  async deleteVideo(@Param('id') id: string): Promise<void> {
     this.logger.log('Попытка удаления видео');
     await this.commandBus.execute<DeleteVideoCommand>(
-      new DeleteVideoCommand(+id),
+      new DeleteVideoCommand(id),
     );
   }
 
   @HttpCode(204)
   @Put(':id')
   async updateVideo(
-    @Param('id', ParseIntPipe) id: string,
+    @Param('id') id: string,
     @Body() updateVideoDto: UpdateVideoInputModel,
   ): Promise<void> {
     this.logger.log('Попытка обновления видео');
     await this.commandBus.execute<UpdateVideoCommand>(
-      new UpdateVideoCommand(+id, updateVideoDto),
+      new UpdateVideoCommand(id, updateVideoDto),
     );
   }
 
   @Get(':id')
-  async getVideo(
-    @Param('id', ParseIntPipe) id: string,
-  ): Promise<VideoViewModel> {
+  async getVideo(@Param('id') id: string): Promise<VideoViewModel> {
     this.logger.log('Попытка получения видео');
-    return this.videosQueryRepository.getVideoById(+id);
+    return this.videosQueryRepository.getVideoById(id);
   }
 
   @Get()
