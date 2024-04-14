@@ -20,6 +20,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       };
       const responseBody: any = exception.getResponse();
       responseBody.message.forEach((m, i) => {
+        console.log(m)
         if (
           i > 0 &&
           responseBody.message[i].slice(

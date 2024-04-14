@@ -28,6 +28,10 @@ export class BlogService {
     }
     return blog;
   }
+  async checkBlogById(id: string): Promise<BlogAggregate> {
+    this.logger.log(`Проверка наличия блога по id: ${id}`);
+    return await this.blogRepository.getById(id);
+  }
 
   async getAllBlogs(): Promise<[BlogAggregate[], number]> {
     this.logger.log(`Поиск всех блогов в БД`);
