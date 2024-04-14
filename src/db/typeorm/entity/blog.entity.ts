@@ -9,4 +9,6 @@ export class BlogEntity extends BaseEntity {
   description: string;
   @Column()
   websiteUrl: string;
+  @Column()
+  isMembership: boolean;
 }

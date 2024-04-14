@@ -5,4 +5,5 @@ export class PostViewModel {
   content: string;
   blogId: string;
   blogName: string;
+  createdAt: string;
 }

@@ -10,4 +10,6 @@ export class BaseSchema extends Document {
     },
   })
   _id: string;
+  @Prop({ type: Date })
+  createdAt: Date;
 }

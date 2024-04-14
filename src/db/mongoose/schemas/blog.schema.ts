@@ -9,6 +9,8 @@ export class Blog extends BaseSchema {
   description: string;
   @Prop({ type: String, required: true })
   websiteUrl: string;
+  @Prop({ type: Boolean, required: false })
+  isMembership: boolean;
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

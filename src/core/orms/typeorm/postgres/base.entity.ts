@@ -9,9 +9,9 @@ export class BaseEntity {
   @PrimaryColumn('uuid')
   public id: string;
   @CreateDateColumn({ name: 'created_at', nullable: true })
-  public created_At: Date;
+  public createdAt: Date;
   @UpdateDateColumn({ name: 'updated_at', nullable: true })
-  public updated_At: Date;
+  public updatedAt: Date;
   @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  public deleted_At: Date;
+  public deletedAt: Date;
 }

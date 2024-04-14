@@ -1,11 +1,15 @@
 import { IBlog } from './blog.interface';
 import { BlogService } from './service';
 import {
+  IsBoolean,
+  IsDate,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUUID,
   Matches,
-  MaxLength, MinLength,
+  MaxLength,
+  MinLength,
   validateSync,
 } from 'class-validator';
 import { Logger } from '@nestjs/common';
@@ -34,12 +38,21 @@ export class BlogAggregate extends BlogService implements IBlog {
     '^https://([a-zA-Z0-9_-]+\\.)+[a-zA-Z0-9_-]+(\\/[a-zA-Z0-9_-]+)*\\/?$',
   )
   websiteUrl: string;
+  @IsNotEmpty()
+  @IsDate()
+  createdAt: Date;
+  @IsOptional()
+  @IsBoolean()
+  isMembership: boolean;
+
   static create(blog: Partial<IBlog>): BlogAggregate {
     const _blog = new BlogAggregate();
     _blog.id = randomUUID();
     _blog.name = blog.name;
     _blog.description = blog.description;
     _blog.websiteUrl = blog.websiteUrl;
+    _blog.createdAt = new Date();
+    _blog.isMembership = false;
     const error = validateSync(_blog);
     if (!!error.length) {
       error.forEach((e) => _blog.logger.error(e.constraints));
@@ -54,6 +67,8 @@ export class BlogAggregate extends BlogService implements IBlog {
     _blog.name = blog.name;
     _blog.description = blog.description;
     _blog.websiteUrl = blog.websiteUrl;
+    _blog.createdAt = blog.createdAt;
+    _blog.isMembership = blog.isMembership;
 
     const error = validateSync(_blog);
     if (!!error.length) {
@@ -69,6 +84,8 @@ export class BlogAggregate extends BlogService implements IBlog {
       name: blog.name,
       description: blog.description,
       websiteUrl: blog.websiteUrl,
+      createdAt: blog.createdAt.toISOString(),
+      isMembership: blog.isMembership,
     };
   }
 

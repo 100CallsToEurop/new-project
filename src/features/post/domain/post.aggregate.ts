@@ -2,6 +2,7 @@ import { IPost } from './post.interface';
 import { PostService } from './service';
 import { Logger } from '@nestjs/common';
 import {
+  IsDate,
   IsNotEmpty,
   IsString,
   IsUUID,
@@ -32,6 +33,9 @@ export class PostAggregate extends PostService implements IPost {
   @IsNotEmpty()
   @IsString()
   blogName: string;
+  @IsNotEmpty()
+  @IsDate()
+  createdAt: Date;
 
   static create(post: Partial<IPost>): PostAggregate {
     const _post = new PostAggregate();
@@ -41,6 +45,7 @@ export class PostAggregate extends PostService implements IPost {
     _post.content = post.content;
     _post.blogId = post.blogId;
     _post.blogName = post.blogName;
+    _post.createdAt = new Date();
 
     const error = validateSync(_post);
     if (!!error.length) {
@@ -58,6 +63,7 @@ export class PostAggregate extends PostService implements IPost {
     _post.content = post.content;
     _post.blogId = post.blogId;
     _post.blogName = post.blogName;
+    _post.createdAt = post.createdAt;
 
     const error = validateSync(_post);
     if (!!error.length) {
@@ -75,6 +81,7 @@ export class PostAggregate extends PostService implements IPost {
       content: post.content,
       blogId: post.blogId,
       blogName: post.blogName,
+      createdAt: post.createdAt.toISOString(),
     };
   }
 
