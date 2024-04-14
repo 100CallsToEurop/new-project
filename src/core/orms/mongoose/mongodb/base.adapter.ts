@@ -1,4 +1,4 @@
-import { Model, FilterQuery, Types, UpdateQuery, Document } from 'mongoose';
+import { Model, FilterQuery, UpdateQuery, Document } from 'mongoose';
 import { BaseRepository } from './base.repository';
 import { Logger } from '@nestjs/common';
 export abstract class BaseAdapter<T, E extends Document>
@@ -32,11 +32,24 @@ export abstract class BaseAdapter<T, E extends Document>
     await this.model.updateMany(schemas).exec();
   }
   async findByOptions(filter?: FilterQuery<E>): Promise<T> {
-    const schema = await this.model.findOne(filter).exec();
+    const schema = await this.model
+      .findOne(filter)
+      .exec()
+      .catch((err) => {
+        this.logger.error(err);
+        return null;
+      });
+    if (!schema) return null;
     return this.mapping({ ...schema.toObject(), id: schema._id.toString() });
   }
   async findAll(filter?: FilterQuery<E>): Promise<[T[], number]> {
-    const schemas = await this.model.find(filter).exec();
+    const schemas = await this.model
+      .find(filter)
+      .exec()
+      .catch((err) => {
+        this.logger.error(err);
+        return [[], 0] as [T[], number];
+      });
     return [
       schemas.map(
         (schema): T =>

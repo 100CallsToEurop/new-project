@@ -1,0 +1,6 @@
+export type BlogResponseType = {
+  id: string;
+  name: string;
+  description: string;
+  websiteUrl: string;
+};

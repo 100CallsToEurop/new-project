@@ -2,9 +2,16 @@ import { Module } from '@nestjs/common';
 import { TestingController } from './api';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Video, VideoSchema } from '../../db/mongoose/schemas';
+import {
+  Blog,
+  BlogSchema,
+  Post,
+  PostSchema,
+  Video,
+  VideoSchema,
+} from '../../db/mongoose/schemas';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { VideoEntity } from '../../db/typeorm/entity';
+import { BlogEntity, PostEntity, VideoEntity } from '../../db/typeorm/entity';
 import { TestingRepository } from './infrastructure/repository';
 import {
   TestingMongodbAdapter,
@@ -25,8 +32,12 @@ const configService = new ConfigService();
   imports: [
     CqrsModule,
     configService.get('DB_ADAPTER') === 'mongodb'
-      ? MongooseModule.forFeature([{ name: Video.name, schema: VideoSchema }])
-      : TypeOrmModule.forFeature([VideoEntity]),
+      ? MongooseModule.forFeature([
+          { name: Post.name, schema: PostSchema },
+          { name: Blog.name, schema: BlogSchema },
+          { name: Video.name, schema: VideoSchema },
+        ])
+      : TypeOrmModule.forFeature([VideoEntity, PostEntity, BlogEntity]),
   ],
   controllers: [TestingController],
   providers: [

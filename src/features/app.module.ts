@@ -6,9 +6,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from '../db/typeorm/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoConfig } from '../db/mongoose/config';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AllExceptionsFilter } from '../common/filters';
 import { config } from 'dotenv';
+import { BlogModule } from './blog/blog.module';
+import { PostModule } from './post/post.module';
+import { BasicStrategy } from './auth/strategies';
+import { BasicAuthGuard } from '../common/guards';
 
 config({
   path: `.${process.env.NODE_ENV}.env`,
@@ -26,9 +30,13 @@ const configService = new ConfigService();
       : TypeOrmModule.forRootAsync(TypeOrmConfigService()),
     VideoModule,
     TestingModule,
+    BlogModule,
+    PostModule,
   ],
   controllers: [],
   providers: [
+    BasicStrategy,
+    { provide: APP_GUARD, useClass: BasicAuthGuard },
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
