@@ -20,6 +20,7 @@ import {
   UpdatePostUseCase,
 } from './application/useCases';
 import { PostQueryRepository } from './api/qwery-repository';
+import { IsBlogIdExistsConstraint } from '../../common/decorators';
 
 config({
   path: `.${process.env.NODE_ENV}.env`,
@@ -47,6 +48,7 @@ const useCases = [CreateNewPostUseCase, DeletePostUseCase, UpdatePostUseCase];
           ? PostMongodbAdapter
           : PostPostgresAdapter,
     },
+    IsBlogIdExistsConstraint,
   ],
   exports: [],
 })
