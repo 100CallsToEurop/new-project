@@ -12,7 +12,7 @@ import { BlogModule } from './blog/blog.module';
 import { PostModule } from './post/post.module';
 import { BasicStrategy } from './auth/strategies';
 import { BasicAuthGuard } from '../common/guards';
-import { HttpExceptionFilter } from '../common/filters';
+import { AllExceptionsFilter } from '../common/filters';
 
 config({
   path: `.${process.env.NODE_ENV}.env`,
@@ -39,7 +39,7 @@ const configService = new ConfigService();
     { provide: APP_GUARD, useClass: BasicAuthGuard },
     {
       provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
+      useClass: AllExceptionsFilter,
     },
   ],
 })
