@@ -1,7 +1,9 @@
 import { IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
+import { Transform, TransformFnParams } from 'class-transformer';
 
 export class BlogInputModel {
   @IsNotEmpty()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
   @MinLength(1)
   @MaxLength(15)
   readonly name: string;

@@ -5,7 +5,7 @@ import {
   Get,
   HttpCode,
   Logger,
-  Param,
+  Param, ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -40,7 +40,7 @@ export class BlogController {
   }
   @HttpCode(204)
   @Delete(':id')
-  async deleteBlog(@Param('id') id: string): Promise<void> {
+  async deleteBlog(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     this.logger.log('Попытка удаления блога');
     await this.commandBus.execute<DeleteBlogCommand>(new DeleteBlogCommand(id));
   }
@@ -48,7 +48,7 @@ export class BlogController {
   @HttpCode(204)
   @Put(':id')
   async updateVideo(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateBlogDto: BlogInputModel,
   ): Promise<void> {
     this.logger.log('Попытка обновления блога');
@@ -59,7 +59,7 @@ export class BlogController {
 
   @Public()
   @Get(':id')
-  async getBlog(@Param('id') id: string): Promise<BlogViewModel> {
+  async getBlog(@Param('id', ParseUUIDPipe) id: string): Promise<BlogViewModel> {
     this.logger.log('Попытка получения блога');
     return this.blogQueryRepository.getBlogById(id);
   }

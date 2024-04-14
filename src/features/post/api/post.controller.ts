@@ -6,6 +6,7 @@ import {
   HttpCode,
   Logger,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -40,7 +41,7 @@ export class PostController {
   }
   @HttpCode(204)
   @Delete(':id')
-  async deletePost(@Param('id') id: string): Promise<void> {
+  async deletePost(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     this.logger.log('Попытка удаления поста');
     await this.commandBus.execute<DeletePostCommand>(new DeletePostCommand(id));
   }
@@ -48,7 +49,7 @@ export class PostController {
   @HttpCode(204)
   @Put(':id')
   async updateVideo(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: PostInputModel,
   ): Promise<void> {
     this.logger.log('Попытка обновления поста');
@@ -58,7 +59,9 @@ export class PostController {
   }
   @Public()
   @Get(':id')
-  async getPost(@Param('id') id: string): Promise<PostViewModel> {
+  async getPost(
+    @Param('id', ParseUUIDPipe) id: string,
+  ): Promise<PostViewModel> {
     this.logger.log('Попытка получения поста');
     return this.postQueryRepository.getPostById(id);
   }
