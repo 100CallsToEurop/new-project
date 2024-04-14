@@ -5,7 +5,7 @@ import {
   IsString,
   IsUUID,
   Matches,
-  MaxLength,
+  MaxLength, MinLength,
   validateSync,
 } from 'class-validator';
 import { Logger } from '@nestjs/common';
@@ -20,6 +20,7 @@ export class BlogAggregate extends BlogService implements IBlog {
   id: string;
   @IsString()
   @IsNotEmpty()
+  @MinLength(1)
   @MaxLength(15)
   name: string;
   @IsString()

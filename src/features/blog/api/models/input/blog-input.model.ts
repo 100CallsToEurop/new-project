@@ -1,7 +1,8 @@
-import { IsNotEmpty, Matches, MaxLength } from 'class-validator';
+import { IsNotEmpty, Matches, MaxLength, MinLength } from 'class-validator';
 
 export class BlogInputModel {
   @IsNotEmpty()
+  @MinLength(1)
   @MaxLength(15)
   readonly name: string;
   @IsNotEmpty()
