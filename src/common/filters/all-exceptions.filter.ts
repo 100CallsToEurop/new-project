@@ -7,7 +7,7 @@ import {
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
-export class AllExceptionsFilter implements ExceptionFilter {
+export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -19,28 +19,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
         errorsMessages: [],
       };
       const responseBody: any = exception.getResponse();
-      responseBody.message.forEach((m, i) => {
-        if (
-          i > 0 &&
-          responseBody.message[i].slice(
-            0,
-            responseBody.message[i].indexOf(' '),
-          ) ===
-            responseBody.message[i - 1].slice(
-              0,
-              responseBody.message[i - 1].indexOf(' '),
-            )
-        )
-          return;
-        const mArr = m.split(' ');
-        errorResponse.errorsMessages.push({
-          message: m,
-          field: mArr[0] === 'each' ? mArr[3] : mArr[0],
-        });
-      });
+
+      responseBody.message.forEach((m) => errorResponse.errorsMessages.push(m));
+
       response.status(status).json(errorResponse);
     } else {
       response.status(status).json({
+        message: (exception.getResponse() as { message: string }).message,
         statusCode: status,
         timestamp: new Date().toISOString(),
         path: request.url,
